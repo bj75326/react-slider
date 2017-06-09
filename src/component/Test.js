@@ -8,7 +8,7 @@ class Test extends Component{
     constructor(props){
         super(props);
         this.state = {
-            slider_status_01: {value: 0}
+            slider_status_01: {value: 3.7}
         }
     }
 
@@ -40,7 +40,7 @@ class Test extends Component{
                                     <span className="bin-cell-label">{"value: " + this.state.slider_status_01.value}</span>
                                 </div>
                                 <div className="bin-cell-value">
-                                    <Slider value={this.state.slider_status_01.value} ident="slider_status_01"/>
+                                    <Slider value={this.state.slider_status_01.value} ident="slider_status_01" min={0} max={100} step={1}/>
                                 </div>
                             </div>
                             <div className="bin-cell-right">
