@@ -8,7 +8,7 @@ import styles from './style.css';
 
 let noop = ()=>{};
 let isTouched = false;
-let startX;
+let startX, thumbStartX;
 let refPointX;
 
 class Slider extends Component{
@@ -83,6 +83,8 @@ class Slider extends Component{
 
             let touch = e.touches[0];
             startX = touch.clientX;
+            let thumb = e.target;
+            thumbStartX = thumb.getBoundingClientRect().left;
             refPointX = this.sliderRef.getBoundingClientRect().left;
         }
     }
@@ -90,14 +92,16 @@ class Slider extends Component{
     handleTouchMove(e){
         if(isTouched){
             let touch = e.touches[0];
-            let currentX = touch.clientX;
+            //let thumb = e.target;
+            let deltaX = touch.clientX - startX;
             const min = this.props.min;
             const max = this.props.max;
             const step = this.props.step;
 
-            let value = Math.round((currentX - refPointX) / (this.sliderOverallLength/((max-min)/step))) * step + min;
+            let value = Math.round((thumbStartX + deltaX - refPointX) / (this.sliderOverallLength/((max-min)/step))) * step + min;
             console.log(value);
-            this.setState({value: this.trimAlignValue(value)});
+            //this.setState({value: this.trimAlignValue(value)});
+            this.props.onChange(this.props.ident, this.trimAlignValue(value));
         }
     }
 
@@ -108,8 +112,6 @@ class Slider extends Component{
     }
 
     getSlider(slider){
-        console.log('ref');
-        console.log(slider);
         this.sliderRef = slider;
         console.log(this.sliderRef);
     }
@@ -119,9 +121,14 @@ class Slider extends Component{
         return percentage + '%';
     }
 
-    componentWillMount(){
-
+    componentWillReceiveProps(nextProps){
+        if('value' in nextProps){
+            this.setState({
+                value: nextProps.value
+            });
+        }
     }
+
     componentDidMount(){
         //componentDidMount 在 DOMContentLoaded 之前执行
         //componentDidMount 可以用来处理异步数据获取的操作 并可以setState触发重新渲染
@@ -136,6 +143,7 @@ class Slider extends Component{
     }
 
     render(){
+        console.log('render run');
         const {className, prefixCls, disabled, min, max, step} = this.props;
 
         const percentage = this.getThumbPosition(this.state.value, min, max);

@@ -12,8 +12,10 @@ class Test extends Component{
         }
     }
 
-    onChange(ident){
-
+    onChange(ident, value){
+        if(this.state.hasOwnProperty(ident)){
+            this.setState({[ident]: {value: value}});
+        }
     }
 
     render(){
@@ -40,7 +42,7 @@ class Test extends Component{
                                     <span className="bin-cell-label">{"value: " + this.state.slider_status_01.value}</span>
                                 </div>
                                 <div className="bin-cell-value">
-                                    <Slider value={this.state.slider_status_01.value} ident="slider_status_01" min={0} max={100} step={1}/>
+                                    <Slider value={this.state.slider_status_01.value} ident="slider_status_01" min={0} max={100} step={1} onChange={this.onChange.bind(this)}/>
                                 </div>
                             </div>
                             <div className="bin-cell-right">
