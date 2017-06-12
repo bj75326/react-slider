@@ -46,7 +46,9 @@ class Slider extends Component{
         min: PropTypes.number,
         max: PropTypes.number,
         step: PropTypes.number,
-        disabled: PropTypes.bool
+        disabled: PropTypes.bool,
+        leftText: PropTypes.any,
+        rightText: PropTypes.any
     };
 
     trimAlignValue(value, nextProps={}){
@@ -152,7 +154,7 @@ class Slider extends Component{
     }
 
     render(){
-        const {className, prefixCls, disabled, min, max, step} = this.props;
+        const {className, prefixCls, disabled, min, max, leftText, rightText} = this.props;
 
         const percentage = this.getThumbPosition(this.state.value, min, max);
 
@@ -167,16 +169,18 @@ class Slider extends Component{
 
         return (
             <div className={sliderClassName}>
+                {leftText !== undefined ? <div className={styles[`${prefixCls}-left`]}>{leftText}</div> : null}
                 <div className={styles[`${prefixCls}-content`]} ref={this.getSlider.bind(this)}>
                     <div className={styles[`${prefixCls}-runway`]}></div>
                     <div className={styles[`${prefixCls}-progress`]} style={{width: percentage}}></div>
                     <div className={styles[`${prefixCls}-thumb`]} style={{left: percentage}}
-                         onTouchStart={this.handleTouchStart.bind(this)}
-                         onTouchMove={this.handleTouchMove.bind(this)}
-                         onTouchEnd={this.handleTouchEnd.bind(this)}
+                         onTouchStart={disabled ?  noop : this.handleTouchStart.bind(this)}
+                         onTouchMove={disabled ?  noop : this.handleTouchMove.bind(this)}
+                         onTouchEnd={disabled ?  noop : this.handleTouchEnd.bind(this)}
                     >
                     </div>
                 </div>
+                {rightText !== undefined ?  <div className={styles[`${prefixCls}-right`]}>{rightText}</div> : null}
             </div>
         );
     }
