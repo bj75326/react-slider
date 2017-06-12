@@ -8,7 +8,9 @@ class Test extends Component{
     constructor(props){
         super(props);
         this.state = {
-            slider_status_01: {value: 3.7}
+            slider_status_01: {value: 0},
+            slider_status_02: {value: 20},
+            slider_status_03: {value: 15}
         }
     }
 
@@ -43,6 +45,40 @@ class Test extends Component{
                                 </div>
                                 <div className="bin-cell-value">
                                     <Slider value={this.state.slider_status_01.value} ident="slider_status_01" min={0} max={100} step={1} onChange={this.onChange.bind(this)}/>
+                                </div>
+                            </div>
+                            <div className="bin-cell-right">
+                                <div className="bin-cell-btnGroup"></div>
+                            </div>
+                        </a>
+                        <a className="bin-cell">
+                            <div className="bin-cell-left">
+                                <div className="bin-cell-btnGroup"></div>
+                            </div>
+                            <div className="bin-cell-content">
+                                <div className="bin-cell-title">
+                                    <span className="bin-cell-text">初始值</span>
+                                    <span className="bin-cell-label">{"value: " + this.state.slider_status_02.value}</span>
+                                </div>
+                                <div className="bin-cell-value">
+                                    <Slider value={this.state.slider_status_02.value} ident="slider_status_02" min={0} max={100} step={1} onChange={this.onChange.bind(this)}/>
+                                </div>
+                            </div>
+                            <div className="bin-cell-right">
+                                <div className="bin-cell-btnGroup"></div>
+                            </div>
+                        </a>
+                        <a className="bin-cell">
+                            <div className="bin-cell-left">
+                                <div className="bin-cell-btnGroup"></div>
+                            </div>
+                            <div className="bin-cell-content">
+                                <div className="bin-cell-title">
+                                    <span className="bin-cell-text">左右文字</span>
+                                    <span className="bin-cell-label">{"value: " + this.state.slider_status_03.value}</span>
+                                </div>
+                                <div className="bin-cell-value">
+                                    <Slider value={this.state.slider_status_03.value} ident="slider_status_03" min={0} max={100} step={1} onChange={this.onChange.bind(this)}/>
                                 </div>
                             </div>
                             <div className="bin-cell-right">

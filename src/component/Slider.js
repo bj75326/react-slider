@@ -23,7 +23,6 @@ class Slider extends Component{
             value: this.trimAlignValue(value),
             dragging: false
         };
-        //console.log(this.state);
     }
 
     static defaultProps = {
@@ -86,6 +85,8 @@ class Slider extends Component{
             let thumb = e.target;
             thumbStartX = thumb.getBoundingClientRect().left;
             refPointX = this.sliderRef.getBoundingClientRect().left;
+
+            this.setState({dragging : true});
         }
     }
 
@@ -108,6 +109,7 @@ class Slider extends Component{
     handleTouchEnd(e){
         if(isTouched){
             isTouched = false;
+            this.setState({dragging : false});
         }
     }
 
@@ -122,11 +124,13 @@ class Slider extends Component{
     }
 
     componentWillReceiveProps(nextProps){
-        if('value' in nextProps){
-            this.setState({
-                value: nextProps.value
-            });
-        }
+        const prevValue = this.state.value;
+        const value = nextProps.value !== undefined ? nextProps.value : prevValue;
+        const nextValue = this.trimAlignValue(value, nextProps);
+
+        if(nextValue === prevValue) return;
+
+        this.setState({value: nextValue});
     }
 
     componentDidMount(){
@@ -140,17 +144,25 @@ class Slider extends Component{
         };
 
         document.addEventListener('DOMContentLoaded', onDOMContentLoaded, false);
+
+        //如果母组件状态与当前子组件不一致，触发母组件重新渲染
+        if(this.props.hasOwnProperty('value') && this.props.value !== this.state.value){
+            this.props.onChange(this.props.ident, this.state.value);
+        }
     }
 
     render(){
-        console.log('render run');
         const {className, prefixCls, disabled, min, max, step} = this.props;
 
         const percentage = this.getThumbPosition(this.state.value, min, max);
 
+        const dragging = !!this.state.dragging;
+
         const sliderClassName = classnames({
             [styles[className]]: !!className,
-            [styles[prefixCls]]: true
+            [styles[prefixCls]]: true,
+            [styles[`${prefixCls}-dragging`]]: dragging,
+            [styles[`${prefixCls}-disabled`]]: disabled
         });
 
         return (
